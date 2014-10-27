@@ -20,66 +20,30 @@
   * *********************************************************************************************/
 package com.alanrodas.scaliapp
 
-class SimpleParameter(
+case class NamedParameter(
 	val name : String,
 	val default : String,
 	val required : Boolean
 )
 
-class SimpleParameterBuilder {
-	var name : String = ""
-	var default : String = ""
-
-	def named(name : String) = {
-		this.name = name
-		this
-	}
-
-	def withDefault(default : String) = {
-		new SimpleParameter(name, default, false)
-	}
-
-	def withNoDefault() = {
-		new SimpleParameter(name, "", true)
-	}
-}
-
-class Parameter(
+class DashedParameter(
 	val name : String,
-	val shortname : Option[String],
-	val description : String,
-	val required : Boolean,
-	val numArgs : Int,
-	val argsDefaults : Map[Int, String]
+	val altName : Option[String],
+	val description : String
 )
 
-class ParameterBuilder {
-	var name : String = ""
-	var shortname : Option[String] = None
-	var description : String = ""
-	var require : Boolean = false
+case class DashedArgumentParameter(
+		override val name : String,
+		override val altName : Option[String],
+		override val description : String,
+		val required : Boolean,
+		val numArgs : Int,
+		val argsDefaults : List[String]
+) extends DashedParameter(name, altName, description)
 
-	def named(name : String) = {
-		this.name = name
-		this
-	}
-
-	def shortVersion(shortname : String) = {
-		this.shortname = Some(shortname)
-		this
-	}
-
-	def that(description : String) = {
-		this.description = description
-		this
-	}
-
-	def required() = {
-		this.require = true
-		this
-	}
-
-	def does(callback : List[Parameter] => Int) = {
-		this
-	}
-}
+case class FlagParameter(
+		override val name : String,
+		override val altName : Option[String],
+		override val description : String,
+		val default : Boolean
+) extends DashedParameter(name, altName, description)

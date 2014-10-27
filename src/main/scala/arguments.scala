@@ -20,9 +20,59 @@
   * *********************************************************************************************/
 package com.alanrodas.scaliapp
 
-abstract class ValuedArgument[VType](val value : VType) {
-	def get[RType]() = value.asInstanceOf[RType]
+abstract class ValuedArgument(val value : String)
+
+case class UnnamedArgument(override val value : String) extends ValuedArgument(value)
+case class NamedArgument(val name : String, override val value : String) extends ValuedArgument(value)
+
+abstract class Argument[T](
+		val name : String,
+		val altName : Option[String],
+		val value : T,
+		val defined : Boolean
+) {
+	def isFlag = false
 }
 
-case class UnnamedArgument[VType](override val value : VType) extends ValuedArgument[VType](value)
-case class NamedArgument[VType](val name : String, override val value : VType) extends ValuedArgument[VType](value)
+case class FlagArgument(
+		override val name : String,
+		override val altName : Option[String],
+		override val value : Boolean,
+		override val defined : Boolean
+) extends Argument[Boolean](name, altName, value, defined) {
+	override def isFlag = true
+}
+
+case class DashedArgument(
+		override val name : String,
+		override val altName : Option[String],
+		override val value : Seq[String],
+		override val defined : Boolean
+) extends Argument[Seq[String]](name, altName, value, defined)
+
+abstract class CalledCommand(
+		val command : String,
+		val flags : Map[String, FlagArgument],
+		val dashedArguments : Map[String, DashedArgument]
+) {
+	def flag(name : String) = flags(name).value
+	def dashedArg(name : String) = dashedArguments(name).value
+	def allFlags = flags.values.toSet
+	def allDashedArgs = dashedArguments.values.toSet
+}
+
+case class CalledArgumentCommand(
+		override val command : String,
+		val arguments : Map[String, NamedArgument],
+		override val flags : Map[String, FlagArgument],
+		override val dashedArguments : Map[String, DashedArgument]
+) extends CalledCommand(command, flags, dashedArguments) {
+	def arg(name : String) = arguments(name).value
+}
+
+case class CalledMultiArgumentCommand(
+		override val command : String,
+		val arguments : List[UnnamedArgument],
+		override val flags : Map[String, FlagArgument],
+		override val dashedArguments : Map[String, DashedArgument]
+) extends CalledCommand(command, flags, dashedArguments)

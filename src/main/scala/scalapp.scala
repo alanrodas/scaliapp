@@ -21,10 +21,10 @@
 package com.alanrodas
 
 package object scaliapp {
-	// def command() = new CommandBuilder()
-	def argument() = new ParameterBuilder()
-	def value() = new SimpleParameterBuilder()
-
+	//def command() = new CommandBuilder()
+	def param() = new DashedArgumentParameterBuilder()
+	def value() = new NamedParameterBuilder()
+	def flag() = new FlagParameterBuilder()
 	/*
 	implicit class ListWithMapBy[V](list: List[V]){
 		def mapBy[K](keyFunc: V => K) = {
@@ -32,4 +32,5 @@ package object scaliapp {
 		}
 	}
 	*/
+	def printError(msg : String) = println(Console.RED + msg + Console.RESET)
 }

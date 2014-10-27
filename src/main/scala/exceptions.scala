@@ -22,21 +22,25 @@ package com.alanrodas.scaliapp
 
 class InvalidCommandDefinition(msg : String) extends Exception(msg)
 
-class InvalidCommandExecution(msg : String) extends Exception(msg)
+class InvalidCommandCall(val cmd : String, val msg : String
+) extends RuntimeException((if (cmd.isEmpty) "the program" else cmd ) + msg)
 
 class MultiArgumentAndArgumentIncompatibility()
 	extends InvalidCommandDefinition("a multi-argument command cannot receive named arguments")
 
-class MinArgumentsNotSatisfied(command : String, required : Int, given: Int)
-		extends InvalidCommandExecution(
-			(if (command.isEmpty) "the program" else command ) +
-			s" takes $required arguments but " +
+/*
+class MinArgumentsNotSatisfied(override  cmd : String, required : Int, given: Int)
+		extends InvalidCommandCall(cmd, s"$command takes $required arguments but " +
 			(if (given == 0) "none was given" else s"only $given " +
 					(if (given == 1) "was" else "were") + " given")
 		)
 
-class MaxArgumentsNotSatisfied(command : String, required : Int, given: Int)
-		extends InvalidCommandExecution(
-			(if (command.isEmpty) "the program" else command ) +
-			s" takes $required arguments but $given " +
+class MaxArgumentsNotSatisfied(override cmd : String, required : Int, given: Int)
+		extends InvalidCommandCall(s"$command takes $required arguments but $given " +
 					(if (given == 1) "was" else "were") + " given")
+*/
+class ArgumentsExceeded(override val cmd : String, val maxArguments : Int, val sendedArguments : Int)
+	extends InvalidCommandCall(cmd, s" takes a maximum of $maxArguments but was called with $sendedArguments")
+
+class RequiredArgumentsNotSatisfied(override val cmd : String, val minArguments : Int, val sendedArguments : Int)
+		extends InvalidCommandCall(cmd, s" takes a minimum of $minArguments but only $sendedArguments were given")

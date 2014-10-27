@@ -89,10 +89,13 @@ trait CLIApp extends DelayedInit {
 		this._args = args
 		for (proc <- initCode) proc()
 		try {
-			println(commands.execute(args).length)
+			println(commandManager.execute(args).length)
 		} catch {
-			case e : Exception => println(e.getMessage)
-			sys.exit(1)
+			case e : Exception => {
+				onCommandNotFound(args(0))
+				// e.printStackTrace()
+				printError(e.getLocalizedMessage)
+			}
 		}
 		if (util.Properties.propIsSet("scala.time")) {
 			val total = currentTime - executionStart
@@ -102,6 +105,7 @@ trait CLIApp extends DelayedInit {
 
 	/******************* END DELAYED INIT IMPL ************************/
 
-	protected val commands = new CommandManager()
+	protected val commandManager = new CommandManager()
+	protected val onCommandNotFound = (command : String) => {printError(command + " is not a valid command")}
 	// protected var flags : List[Flag] = Nil
 }
