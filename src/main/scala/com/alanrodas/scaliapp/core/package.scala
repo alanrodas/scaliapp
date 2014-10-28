@@ -4,9 +4,9 @@
   *
   * The primary distribution site is
   *
-  * http://scalavcs.alanrodas.com
+  * http://scaliapp.alanrodas.com
   *
-  * Copyright 2014 alanrodas
+  * Copyright 2014 Alan Rodas Bonjour
   *
   * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
   * except in compliance with the License. You may obtain a copy of the License at
@@ -20,30 +20,11 @@
   * *********************************************************************************************/
 package com.alanrodas.scaliapp
 
-case class NamedParameter(
-	val name : String,
-	val default : String,
-	val required : Boolean
-)
-
-class DashedParameter(
-	val name : String,
-	val altName : Option[String],
-	val description : String
-)
-
-case class DashedArgumentParameter(
-		override val name : String,
-		override val altName : Option[String],
-		override val description : String,
-		val required : Boolean,
-		val numArgs : Int,
-		val argsDefaults : List[String]
-) extends DashedParameter(name, altName, description)
-
-case class FlagParameter(
-		override val name : String,
-		override val altName : Option[String],
-		override val description : String,
-		val default : Boolean
-) extends DashedParameter(name, altName, description)
+/**
+ * This package contains all the internal classes and
+ * definitions of Scaliapp.
+ *
+ * Here is were all the definitions and calls are processed
+ * and transformed in order to run the matching callbacks.
+ */
+package object core

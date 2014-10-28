@@ -20,8 +20,11 @@
   * *********************************************************************************************/
 package com.alanrodas.scaliapp
 
-import scala.compat.Platform.currentTime
+import com.alanrodas.scaliapp.core.CommandManager
+import com.alanrodas.scaliapp.core.exceptions.{NotFoundCommand, InvalidCommandCall}
+
 import scala.collection.mutable.ListBuffer
+import scala.compat.Platform.currentTime
 
 /** The `App` trait can be used to quickly turn objects
   *  into executable programs. Here is an example:
@@ -89,13 +92,11 @@ trait CLIApp extends DelayedInit {
 		this._args = args
 		for (proc <- initCode) proc()
 		try {
-			println(commandManager.execute(args).length)
+			commands.setSigns(shortParamSign, longParamSign)
+			commands.execute(args)
 		} catch {
-			case e : Exception => {
-				onCommandNotFound(args(0))
-				// e.printStackTrace()
-				printError(e.getLocalizedMessage)
-			}
+			case e : NotFoundCommand => onCommandNotFound(e)
+			case e : InvalidCommandCall => onInvalidCommandCall(e)
 		}
 		if (util.Properties.propIsSet("scala.time")) {
 			val total = currentTime - executionStart
@@ -105,7 +106,16 @@ trait CLIApp extends DelayedInit {
 
 	/******************* END DELAYED INIT IMPL ************************/
 
-	protected val commandManager = new CommandManager()
-	protected val onCommandNotFound = (command : String) => {printError(command + " is not a valid command")}
-	// protected var flags : List[Flag] = Nil
+	/** Define the short parameter sign to use. Defaults to ''"-''. */
+	protected var shortParamSign = CommandManager.SHORT_PARAM_SIGN
+	/** Define the long parameter sign to use. Defaults to ''"--''. */
+	protected var longParamSign = CommandManager.LONG_PARAM_SIGN
+	/** Hold the command that the user defined. */
+	implicit protected val commands = new CommandManager()
+	/** Define the action to take in case the program was called with an invalid command. */
+	protected val onCommandNotFound = (e : NotFoundCommand) => {printError(e.msg)}
+	/** Define the action to take in case the program was called with an invalid set of values. */
+	protected val onInvalidCommandCall = (e : InvalidCommandCall) => {printError(e.msg)}
+
+	private def printError(msg : String) = println(Console.RED + msg + Console.RESET)
 }

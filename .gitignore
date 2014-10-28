@@ -1,11 +1,18 @@
+.DS_Store
 *.class
 *.log
+stylesheets/
+fonts/
+images/
+scripts/
+downloads/
 
 # sbt specific
 .cache/
 .history/
 .lib/
 .idea/
+.idea_modules/
 dist/*
 target/
 lib_managed/
