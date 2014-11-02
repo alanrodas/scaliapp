@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scaliapp</title>
+    <meta name="description" content="The library for generating CLI applications in Scala with no effort.">
+    <meta name="author" content="Alan Rodas Bonjour">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/bootstrap-ext.css">
+    <link rel="stylesheet" href="stylesheets/font-awesome.min.css">
+    <link rel="stylesheet" href="stylesheets/prism.css">
+    <!-- link(rel="stylesheet" href="stylesheets/coffee-and-cream.css")-->
+    <link rel="stylesheet" href="stylesheets/scaliapp.css">
+  </head>
+  <body>
+        <header id="header" class="scrolled">
+          <nav role="navigation" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button data-toggle="collapse" data-target="#navigation" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                <div class="navbar-brand-container"><a href="index.html" class="navbar-brand"><i class="fa fa-terminal"></i>&nbsp;Scaliapp</a>
+                  <!--a.navbar-brand(href= titleLink)= title-->
+                </div>
+              </div>
+              <div id="navigation" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                      <li><a href="download.html">Downloads</a>
+                      </li>
+                      <li><a href="guide.html">Guide</a>
+                      </li>
+                      <li><a href="api/index.html#com.alanrodas.scaliapp.package">API</a>
+                      </li>
+                      <li><a href="https://github.com/alanrodas/scaliapp"><i class="fa fa-github"></i></a>
+                      </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+        <div style="padding-top:50px;" class="main-content">
+    <div class="jumbotron">
+      <div class="container">
+        <h1><i class="fa fa-terminal">Scaliapp</i></h1>
+        <p>The library for generating CLI applications in Scala with no effort.</p>
+        <p><a href="downloads/scaliapp_2.11.jar" class="pull-right btn btn-success btn-lg">Download ver 0.1</a></p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="callout callout-danger">
+        <h4>WARNING: This is alpha code</h4>
+        <p>
+          Do not use this library for production code. This still
+          requires proper testing and tunning.
+        </p>
+        <p>Use under your own risk.</p>
+      </div>
+      <h2>Simple as it can be
+        <pre><code class="language-scala">object MainApp extends CLIApp {
+	command named "push" accepts Seq(
+		flag named "verbose" alias "v" as false,
+		flag named "quiet" alias "q" as false,
+		flag named "dry-run" alias "n" as false,
+		flag named "force" alias "f" as false,
+		arg named "repo" taking 1 value,
+		arg named "recurse-submodules" taking 1 as List("check"),
+		arg named "exec" taking 1 value
+	) receives Seq(
+		value named "target" as "origin",
+		value named "branch" as "master"
+	) does { commandCall =>
+		// Your action to perform on command call here
+	}
+	command named "add" accepts Seq(
+		flag named "quiet" alias "q" as false,
+		flag named "dry-run" alias "n" as false,
+		flag named "force" alias "f" as false,
+		flag named "intent-to-add" alias "N" as false,
+		flag named "all" alias "A" as false
+	) minimumOf 1 does { commandCall =>
+		// Your action to perform on command call here
+	}
+}</code></pre>
+      </h2>
+      <h2>Go ahead and call you application
+        <pre><code class="language-bash">myApp push --verbose -f origin master</code></pre>
+      </h2>
+      <h2>I like it, what should I do?</h2>
+      <p>
+        Read the <a href="guide">guide</a>
+        check the <a href="api/index.html#com.alanrodas.scaliapp.package">API</a> and
+        <a href="download.html">download</a> the code.
+      </p>
+    </div>
+        <footer id="copyright" class="footer footer-inverse">
+          <div class="container">
+            <div class="row">
+              <div class="text-center col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                <p>&copy; &nbsp;2014&nbsp;<em>Alan Rodas Bonjour</em>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer><a title="Top" href="#" class="scrolltop scrolltop-success"><i class="fa fa-arrow-up"></i></a>
+    <script type="text/javascript" src="scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui-1.9.2.custom.min.js"></script>
+    <script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="scripts/bootstrap-ext.js"></script>
+    <script type="text/javascript" src="scripts/prism.js"></script>
+  </body>
+</html>

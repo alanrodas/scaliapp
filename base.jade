@@ -1,0 +1,22 @@
+extends templates/base
+
+append stylesheets
+	// link(rel="stylesheet" href="stylesheets/coffee-and-cream.css")
+	link(rel="stylesheet" href="stylesheets/scaliapp.css")
+block title
+	title Scaliapp
+	meta(name="description" content="The library for generating CLI applications in Scala with no effort.")
+	meta(name="author" content="Alan Rodas Bonjour")
+
+block toolbar
+	+menu({title:"Scaliapp", icon:"fa fa-terminal", link:"index.html"}, [
+		{title:"Downloads", link:"download.html"},
+		{title:"Guide", link:"guide.html"},
+		{title:"API", link:"api/index.html#com.alanrodas.scaliapp.package"},
+		{icon:"fa fa-github", link:"https://github.com/alanrodas/scaliapp"}
+	])
+
+block footer
+	+copyright(2014, "Alan Rodas Bonjour")
+	a.scrolltop.scrolltop-success(title="Top" href="#")
+		i.fa.fa-arrow-up

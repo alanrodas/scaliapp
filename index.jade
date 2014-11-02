@@ -1,0 +1,55 @@
+extends base
+
+block content
+	.jumbotron
+		.container
+			h1
+				i.fa.fa-terminal Scaliapp
+			p The library for generating CLI applications in Scala with no effort.
+			p
+				a.pull-right.btn.btn-success.btn-lg(href="downloads/scaliapp_2.11.jar") Download ver 0.1
+	.container
+		.callout.callout-danger
+			h4 WARNING: This is alpha code
+			p.
+				Do not use this library for production code. This still
+				requires proper testing and tunning.
+			p.
+				Use under your own risk.
+		h2 Simple as it can be
+			pre
+				code.language-scala.
+					object MainApp extends CLIApp {
+						command named "push" accepts Seq(
+							flag named "verbose" alias "v" as false,
+							flag named "quiet" alias "q" as false,
+							flag named "dry-run" alias "n" as false,
+							flag named "force" alias "f" as false,
+							arg named "repo" taking 1 value,
+							arg named "recurse-submodules" taking 1 as List("check"),
+							arg named "exec" taking 1 value
+						) receives Seq(
+							value named "target" as "origin",
+							value named "branch" as "master"
+						) does { commandCall =>
+							// Your action to perform on command call here
+						}
+						command named "add" accepts Seq(
+							flag named "quiet" alias "q" as false,
+							flag named "dry-run" alias "n" as false,
+							flag named "force" alias "f" as false,
+							flag named "intent-to-add" alias "N" as false,
+							flag named "all" alias "A" as false
+						) minimumOf 1 does { commandCall =>
+							// Your action to perform on command call here
+						}
+					}
+		h2 Go ahead and call you application
+			pre
+				code.language-bash.
+					myApp push --verbose -f origin master
+		h2 I like it, what should I do?
+		p.
+			Read the <a href="guide">guide</a>
+			check the <a href="api/index.html#com.alanrodas.scaliapp.package">API</a> and
+			<a href="download.html">download</a> the code.
